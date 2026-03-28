@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平面向量四心问题 | Peter的数学笔记</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0f0;
+            line-height: 1.8;
+            padding: 30px;
+        }
+        
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(100,150,200,0.3), rgba(150,100,180,0.3));
+            border-radius: 20px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(150,200,255,0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #64b5f6, #ce93d8, #f48fb1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header .subtitle {
+            color: #a0b0d0;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        
+        .header .info {
+            margin-top: 15px;
+            color: #7090b0;
+            font-size: 0.9em;
+        }
+        
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.04);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover { transform: translateY(-3px); }
+        .card.full { grid-column: 1 / -1; }
+        
+        /* Card Colors */
+        .card-gravity { border-top: 4px solid #4fc3f7; }
+        .card-incenter { border-top: 4px solid #ffb74d; }
+        .card-ortho { border-top: 4px solid #81c784; }
+        .card-circum { border-top: 4px solid #f48fb1; }
+        
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-gravity h2 { color: #4fc3f7; }
+        .card-incenter h2 { color: #ffb74d; }
+        .card-ortho h2 { color: #81c784; }
+        .card-circum h2 { color: #f48fb1; }
+        
+        .card h3 {
+            font-size: 1.1em;
+            margin: 20px 0 10px;
+            color: #80c0ff;
+        }
+        
+        .card p, .card li {
+            color: #c0c8e0;
+            font-size: 0.95em;
+        }
+        
+        /* Math Formula Box */
+        .formula-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 15px 0;
+            border-left: 4px solid;
+            font-family: 'Times New Roman', serif;
+        }
+        
+        .gravity-formula { border-color: #4fc3f7; }
+        .incenter-formula { border-color: #ffb74d; }
+        .ortho-formula { border-color: #81c784; }
+        .circum-formula { border-color: #f48fb1; }
+        
+        .formula {
+            font-size: 1.2em;
+            color: #fff;
+            margin: 8px 0;
+        }
+        
+        /* Conclusion Box */
+        .conclusion {
+            background: rgba(100,150,255,0.1);
+            border-radius: 10px;
+            padding: 15px 18px;
+            margin: 12px 0;
+        }
+        
+        .conclusion h4 {
+            color: #80d0ff;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+        
+        .conclusion li {
+            color: #b0c0e0;
+            font-size: 0.9em;
+            margin: 5px 0;
+            padding-left: 15px;
+        }
+        
+        /* Summary Card */
+        .summary-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .summary-card h2 {
+            color: #b388ff;
+            border-bottom: 2px solid #b388ff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .summary-table th, .summary-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .summary-table th {
+            color: #80c0ff;
+            background: rgba(100,150,255,0.1);
+        }
+        
+        .summary-table tr:hover { background: rgba(100,150,255,0.05); }
+        
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin: 2px;
+        }
+        
+        .tag-blue { background: rgba(79,195,247,0.2); color: #4fc3f7; }
+        .tag-orange { background: rgba(255,183,77,0.2); color: #ffb74d; }
+        .tag-green { background: rgba(129,199,132,0.2); color: #81c784; }
+        .tag-pink { background: rgba(244,143,177,0.2); color: #f48fb1; }
+        .tag-purple { background: rgba(179,136,255,0.2); color: #b388ff; }
+        
+        /* Triangle Diagram */
+        .triangle-diagram {
+            width: 200px;
+            height: 180px;
+            position: relative;
+            margin: 15px auto;
+        }
+        
+        .triangle-svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #606080;
+            margin-top: 30px;
+        }
+        
+        /* Comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .comp-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+        
+        .comp-item strong { color: #80c0ff; }
+        
+        @media (max-width: 1000px) {
+            .grid { grid-template-columns: 1fr; }
+            .comparison { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="header">
+            <h1>📐 平面向量四心问题</h1>
+            <p class="subtitle">重心 · 内心 · 垂心 · 外心 | 向量建模与二级结论</p>
+            <p class="info">👤 Peter的高中数学笔记 | 📅 整理于 2026-03-28</p>
+        </div>
+        
+        <div class="grid">
+            
+            <!-- 重心 -->
+            <div class="card card-gravity">
+                <h2>⚫ 重心 G (Centroid)</h2>
+                <p>三角形三条<strong>中线</strong>的交点</p>
+                
+                <svg class="triangle-svg" viewBox="0 0 200 180">
+                    <!-- Triangle ABC -->
+                    <polygon points="100,20 30,150 170,150" fill="none" stroke="#4fc3f7" stroke-width="2"/>
+                    <!-- Midpoints -->
+                    <circle cx="100" cy="150" r="3" fill="#4fc3f7"/>
+                    <text x="100" y="168" fill="#4fc3f7" text-ancho r="middle" font-size="12">D</text>
+                    <circle cx="65" cy="85" r="3" fill="#4fc3f7"/>
+                    <text x="50" y="82" fill="#4fc3f7" text-anchor="middle" font-size="12">E</text>
+                    <circle cx="135" cy="85" r="3" fill="#4fc3f7"/>
+                    <text x="150" y="82" fill="#4fc3f7" text-anchor="middle" font-size="12">F</text>
+                    <!-- Medians -->
+                    <line x1="100" y1="20" x2="100" y2="150" stroke="#4fc3f7" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="30" y1="150" x2="135" y2="85" stroke="#4fc3f7" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="170" y1="150" x2="65" y2="85" stroke="#4fc3f7" stroke-width="1" stroke-dasharray="4"/>
+                    <!-- Vertices -->
+                    <text x="100" y="12" fill="#fff" text-anchor="middle" font-size="14">A</text>
+                    <text x="22" y="155" fill="#fff" text-anchor="middle" font-size="14">B</text>
+                    <text x="178" y="155" fill="#fff" text-anchor="middle" font-size="14">C</text>
+                    <!-- Centroid G -->
+                    <circle cx="100" cy="90" r="5" fill="#ffeb3b"/>
+                    <text x="115" y="90" fill="#ffeb3b" font-size="12">G</text>
+                </svg>
+                
+                <div class="formula-box gravity-formula">
+                    <p class="formula">GA + GB + GC = <strong>0</strong></p>
+                    <p class="formula">G = ((x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3)</p>
+                </div>
+                
+                <div class="conclusion">
+                    <h4>📌 二级结论</h4>
+                    <li>重心到顶点距离 = 2 × 到对边中点距离</li>
+                    <li>S<sub>△GBC</sub> = S<sub>△GCA</sub> = S<sub>△GAB</sub> = S<sub>△ABC</sub>/3</li>
+                    <li>若 O 为任意点，则 OG = (OA+OB+OC)/3</li>
+                    <li>PA + PB + PC = 3PG（P为平面上任意点）</li>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <span class="tag tag-blue">中线交点</span>
+                    <span class="tag tag-blue">向量和为0</span>
+                    <span class="tag tag-blue">坐标平均</span>
+                </div>
+            </div>
+            
+            <!-- 内心 -->
+            <div class="card card-incenter">
+                <h2>🔶 内心 I (Incenter)</h2>
+                <p>三角形三条<strong>角平分线</strong>的交点</p>
+                
+                <svg class="triangle-svg" viewBox="0 0 200 180">
+                    <polygon points="100,20 30,150 170,150" fill="none" stroke="#ffb74d" stroke-width="2"/>
+                    <!-- Angle bisectors (simplified) -->
+                    <line x1="100" y1="20" x2="100" y2="150" stroke="#ffb74d" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="30" y1="150" x2="120" y2="60" stroke="#ffb74d" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="170" y1="150" x2="80" y2="60" stroke="#ffb74d" stroke-width="1" stroke-dasharray="4"/>
+                    <!-- Incenter -->
+                    <circle cx="100" cy="105" r="5" fill="#ffeb3b"/>
+                    <text x="115" y="105" fill="#ffeb3b" font-size="12">I</text>
+                    <!-- Incircle -->
+                    <circle cx="100" cy="105" r="25" fill="none" stroke="#ffb74d" stroke-width="1" stroke-dasharray="3"/>
+                    <text x="100" y="185" fill="#ffb74d" text-anchor="middle" font-size="12">内切圆</text>
+                    <!-- Vertices -->
+                    <text x="100" y="12" fill="#fff" text-anchor="middle" font-size="14">A</text>
+                    <text x="22" y="155" fill="#fff" text-anchor="middle" font-size="14">B</text>
+                    <text x="178" y="155" fill="#fff" text-anchor="middle" font-size="14">C</text>
+                </svg>
+                
+                <div class="formula-box incenter-formula">
+                    <p class="formula">a·IA + b·IB + c·IC = <strong>0</strong></p>
+                    <p class="formula">I = (ax₁+bx₂+cx₃)/(a+b+c), (ay₁+by₂+cy₃)/(a+b+c)</p>
+                </div>
+                
+                <div class="conclusion">
+                    <h4>📌 二级结论</h4>
+                    <li>内切圆半径 r = <strong>2S/(a+b+c)</strong></li>
+                    <li>I 到三边距离相等（内切圆半径）</li>
+                    <li>∠BIC = 90° + ∠A/2</li>
+                    <li>设 BC=a, CA=b, AB=c，则 I 分角线比：BI:IC = c:b</li>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <span class="tag tag-orange">角平分线</span>
+                    <span class="tag tag-orange">内切圆</span>
+                    <span class="tag tag-orange">边长加权</span>
+                </div>
+            </div>
+            
+            <!-- 垂心 -->
+            <div class="card card-ortho">
+                <h2>🟢 垂心 H (Orthocenter)</h2>
+                <p>三角形三条<strong>高</strong>的交点</p>
+                
+                <svg class="triangle-svg" viewBox="0 0 200 180">
+                    <polygon points="100,20 30,150 170,150" fill="none" stroke="#81c784" stroke-width="2"/>
+                    <!-- Altitudes -->
+                    <line x1="100" y1="20" x2="100" y2="150" stroke="#81c784" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="30" y1="150" x2="135" y2="95" stroke="#81c784" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="170" y1="150" x2="65" y2="95" stroke="#81c784" stroke-width="1" stroke-dasharray="4"/>
+                    <!-- Foot of perpendiculars -->
+                    <circle cx="100" cy="150" r="3" fill="#81c784"/>
+                    <circle cx="135" cy="95" r="3" fill="#81c784"/>
+                    <circle cx="65" cy="95" r="3" fill="#81c784"/>
+                    <!-- Orthocenter -->
+                    <circle cx="100" cy="65" r="5" fill="#ffeb3b"/>
+                    <text x="115" y="65" fill="#ffeb3b" font-size="12">H</text>
+                    <!-- Vertices -->
+                    <text x="100" y="12" fill="#fff" text-anchor="middle" font-size="14">A</text>
+                    <text x="22" y="155" fill="#fff" text-anchor="middle" font-size="14">B</text>
+                    <text x="178" y="155" fill="#fff" text-anchor="middle" font-size="14">C</text>
+                </svg>
+                
+                <div class="formula-box ortho-formula">
+                    <p class="formula">HA·BC = HB·CA = HC·AB = <strong>0</strong></p>
+                    <p class="formula">向量垂直：HA ⟂ BC, HB ⟂ CA, HC ⟂ AB</p>
+                </div>
+                
+                <div class="conclusion">
+                    <h4>📌 二级结论</h4>
+                    <li>H 关于各边的对称点在<strong>外接圆</strong>上</li>
+                    <li>若 O 为外心，则 OH² = 9R² - (a²+b²+c²)</li>
+                    <li>垂心到顶点距离与外接圆半径关系</li>
+                    <li>△ABC 为锐角三角形时，H 在内部</li>
+                    <li>向量关系：OH = OA + OB + OC</li>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <span class="tag tag-green">高线交点</span>
+                    <span class="tag tag-green">向量垂直</span>
+                    <span class="tag tag-green">外接圆关联</span>
+                </div>
+            </div>
+            
+            <!-- 外心 -->
+            <div class="card card-circum">
+                <h2>🔴 外心 O (Circumcenter)</h2>
+                <p>三角形三条<strong>垂直平分线</strong>的交点</p>
+                
+                <svg class="triangle-svg" viewBox="0 0 200 180">
+                    <polygon points="100,20 30,150 170,150" fill="none" stroke="#f48fb1" stroke-width="2"/>
+                    <!-- Perpendicular bisectors -->
+                    <line x1="100" y1="20" x2="100" y2="150" stroke="#f48fb1" stroke-width="1" stroke-dasharray="4"/>
+                    <line x1="65" y1="85" x2="135" y2="85" stroke="#f48fb1" stroke-width="1" stroke-dasharray="4"/>
+                    <!-- Circumcircle -->
+                    <circle cx="100" cy="100" r="55" fill="none" stroke="#f48fb1" stroke-width="1" stroke-dasharray="3"/>
+                    <!-- Circumcenter -->
+                    <circle cx="100" cy="100" r="5" fill="#ffeb3b"/>
+                    <text x="115" y="100" fill="#ffeb3b" font-size="12">O</text>
+                    <!-- Vertices -->
+                    <text x="100" y="12" fill="#fff" text-anchor="middle" font-size="14">A</text>
+                    <text x="22" y="155" fill="#fff" text-anchor="middle" font-size="14">B</text>
+                    <text x="178" y="155" fill="#fff" text-anchor="middle" font-size="14">C</text>
+                </svg>
+                
+                <div class="formula-box circum-formula">
+                    <p class="formula">|OA| = |OB| = |OC| = <strong>R</strong></p>
+                    <p class="formula">外接圆半径 R = abc / (4S)</p>
+                </div>
+                
+                <div class="conclusion">
+                    <h4>📌 二级结论</h4>
+                    <li>O 到三顶点距离相等（外接圆半径）</li>
+                    <li>外心在△ABC内部 ⟺ △ABC 为<strong>锐角三角形</strong></li>
+                    <li>外心在边上 ⟺ △ABC 为<strong>直角三角形</strong>（斜边中点）</li>
+                    <li>外心在外部 ⟺ △ABC 为<strong>钝角三角形</strong></li>
+                    <li>R = a/(2sinA) = b/(2sinB) = c/(2sinC)</li>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <span class="tag tag-pink">垂直平分线</span>
+                    <span class="tag tag-pink">外接圆</span>
+                    <span class="tag tag-pink">等距</span>
+                </div>
+            </div>
+            
+            <!-- 四心对比总结 -->
+            <div class="card full summary-card">
+                <h2>📊 四心向量公式对比表</h2>
+                
+                <table class="summary-table">
+                    <thead>
+                        <tr>
+                            <th>心</th>
+                            <th>定义</th>
+                            <th>向量关系</th>
+                            <th>坐标公式</th>
+                            <th>核心性质</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="tag tag-blue">重心G</span></td>
+                            <td>中线交点</td>
+                            <td>GA + GB + GC = 0</td>
+                            <td>((x₁+x₂+x₃)/3, ...)</td>
+                            <td>三分面积</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-orange">内心I</span></td>
+                            <td>角平分线交点</td>
+                            <td>a·IA + b·IB + c·IC = 0</td>
+                            <td>边长加权平均</td>
+                            <td>r = 2S/(a+b+c)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-green">垂心H</span></td>
+                            <td>高线交点</td>
+                            <td>HA·BC = 0（垂直）</td>
+                            <td>—</td>
+                            <td>外接圆关联</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag tag-pink">外心O</span></td>
+                            <td>垂直平分线交点</td>
+                            <td>|OA| = |OB| = |OC|</td>
+                            <td>—</td>
+                            <td>R = abc/(4S)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3 style="margin-top: 25px; color: #b388ff;">🎯 四心综合问题常用结论</h3>
+                
+                <div class="comparison">
+                    <div class="comp-item">
+                        <strong>G、H、O 共线</strong>（欧拉线）<br>
+                        <small>且 OG : GH = 1 : 2</small>
+                    </div>
+                    <div class="comp-item">
+                        <strong>向量法证明</strong><br>
+                        <small>GA + GB + GC = 0 → G 为重心</small>
+                    </div>
+                    <div class="comp-item">
+                        <strong>判定G为重心</strong><br>
+                        <small>P A + P B + P C = 3P G</small>
+                    </div>
+                    <div class="comp-item">
+                        <strong>判定I为内心</strong><br>
+                        <small>∠BIC = 90° + ∠A/2</small>
+                    </div>
+                    <div class="comp-item">
+                        <strong>判定H为垂心</strong><br>
+                        <small>HA·BC = HB·CA = HC·AB = 0</small>
+                    </div>
+                    <div class="comp-item">
+                        <strong>判定O为外心</strong><br>
+                        <small>|OA| = |OB| 或 OA = OB</small>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 25px; color: #b388ff;">💡 解题技巧</h3>
+                <div class="conclusion">
+                    <li><strong>看到中线 → 优先考虑重心</strong>，用 GA + GB + GC = 0</li>
+                    <li><strong>看到角平分线 → 优先考虑内心</strong>，注意边长比</li>
+                    <li><strong>看到高/垂直 → 优先考虑垂心</strong>，用向量点乘为0</li>
+                    <li><strong>看到垂直平分线/等距 → 优先考虑外心</strong></li>
+                    <li><strong>四心综合题常用 trick</strong>：选一个特殊点（如原点）建立向量方程</li>
+                    <li><strong>遇到复杂证明</strong>：把四心性质全部写出来，对照题目条件匹配</li>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="footer">
+            <p>📐 Peter的高中数学笔记 | 平面向量四心问题</p>
+            <p style="margin-top: 10px;">📚 加油！搞懂这些，考试不再怕 ✨</p>
+        </div>
+    </div>
+</body>
+</html>
