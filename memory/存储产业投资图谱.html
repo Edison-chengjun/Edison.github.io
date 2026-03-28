@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>存储产业投资图谱 2025-2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b4e 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #a0a0c0;
+        }
+        
+        .header .date {
+            margin-top: 15px;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+        
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .card h2 {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Panel Colors */
+        .panel-red { border-color: #e74c3c; }
+        .panel-red h2 { color: #e74c3c; border-color: #e74c3c; }
+        
+        .panel-blue { border-color: #3498db; }
+        .panel-blue h2 { color: #3498db; border-color: #3498db; }
+        
+        .panel-green { border-color: #27ae60; }
+        .panel-green h2 { color: #27ae60; border-color: #27ae60; }
+        
+        .panel-orange { border-color: #f39c12; }
+        .panel-orange h2 { color: #f39c12; border-color: #f39c12; }
+        
+        .panel-purple { border-color: #9b59b6; }
+        .panel-purple h2 { color: #9b59b6; border-color: #9b59b6; }
+        
+        .panel-teal { border-color: #1abc9c; }
+        .panel-teal h2 { color: #1abc9c; border-color: #1abc9c; }
+        
+        /* Data Boxes */
+        .stat-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .stat-box .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-box .label {
+            font-size: 0.85em;
+            color: #a0a0c0;
+            margin-top: 5px;
+        }
+        
+        /* Progress Bars */
+        .progress-item {
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s;
+        }
+        
+        .fill-green { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+        .fill-yellow { background: linear-gradient(90deg, #f39c12, #f1c40f); }
+        .fill-red { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .fill-blue { background: linear-gradient(90deg, #3498db, #2980b9); }
+        .fill-purple { background: linear-gradient(90deg, #9b59b6, #8e44ad); }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        th {
+            background: rgba(255,255,255,0.05);
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        /* Vendor Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin: 3px;
+        }
+        
+        .tag-green { background: rgba(39, 174, 96, 0.2); color: #2ecc71; border: 1px solid #27ae60; }
+        .tag-yellow { background: rgba(243, 156, 18, 0.2); color: #f1c40f; border: 1px solid #f39c12; }
+        .tag-red { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+        .tag-blue { background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid #3498db; }
+        .tag-purple { background: rgba(155, 89, 182, 0.2); color: #9b59b6; border: 1px solid #9b59b6; }
+        
+        /* Flow Diagram */
+        .flow-container {
+            padding: 20px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .flow-node {
+            padding: 12px 20px;
+            border-radius: 10px;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .flow-arrow {
+            margin: 0 15px;
+            font-size: 1.5em;
+            color: #667eea;
+        }
+        
+        .flow-sub {
+            margin-left: 30px;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #a0a0c0;
+            margin-bottom: 8px;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #667eea, #764ba2, #f093fb);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-left: 25px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid #1a1a3e;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            color: #d0d0e0;
+            font-size: 0.95em;
+        }
+        
+        /* Risk Alert */
+        .risk-alert {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid #e74c3c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .risk-alert h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        /* Insight Box */
+        .insight-box {
+            background: rgba(102, 126, 234, 0.1);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .insight-box h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .theme-card {
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+        }
+        
+        .theme-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .theme-card.theme1 { border-left: 4px solid #9b59b6; }
+        .theme-card.theme2 { border-left: 4px solid #3498db; }
+        .theme-card.theme3 { border-left: 4px solid #27ae60; }
+        
+        .theme-card ul {
+            list-style: none;
+            font-size: 0.9em;
+            color: #b0b0c0;
+        }
+        
+        .theme-card li {
+            padding: 5px 0;
+        }
+        
+        /* Three Main Lines */
+        .three-lines {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .line-card {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .line-card.line1 { background: linear-gradient(135deg, rgba(155, 89, 182, 0.3), rgba(142, 68, 173, 0.3)); }
+        .line-card.line2 { background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(41, 128, 185, 0.3)); }
+        .line-card.line3 { background: linear-gradient(135deg, rgba(39, 174, 96, 0.3), rgba(46, 204, 113, 0.3)); }
+        
+        .line-card h4 {
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        
+        .line-card p {
+            font-size: 0.85em;
+            color: #c0c0d0;
+        }
+        
+        /* Warning Section */
+        .warning-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .warning-section h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .warning-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .warning-tag {
+            padding: 5px 12px;
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 5px;
+            font-size: 0.85em;
+            color: #ff6b6b;
+        }
+        
+        /* Tech Stack Diagram */
+        .tech-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tech-layer {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .tech-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+        }
+        
+        .tech-content {
+            flex: 1;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+        }
+        
+        .tech-content h5 {
+            color: #667eea;
+            font-size: 0.95em;
+        }
+        
+        .tech-content p {
+            font-size: 0.8em;
+            color: #9090a0;
+            margin-top: 3px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .themes-grid, .three-lines {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            body { background: white; color: black; }
+            .card { border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💾 存储产业投资图谱</h1>
+            <p class="subtitle">Storage Industry Investment Atlas | 2025-2026年度投资框架</p>
+            <p class="date">📅 整理日期：2026-03-28 | 更新人：拉克 ✨</p>
+        </div>
+        
+        <!-- Main Grid -->
+        <div class="grid">
+            
+            <!-- Panel 1: HBM Market -->
+            <div class="card panel-red">
+                <h2>📈 HBM市场展望 | Market Outlook</h2>
+                
+                <div class="stat-row">
+                    <div class="stat-box">
+                        <div class="value">$170亿</div>
+                        <div class="label">2024年市场规模</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value">$980亿</div>
+                        <div class="label">2030年预测</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value">33%</div>
+                        <div class="label">CAGR增长率</div>
+                    </div>
+                </div>
+                
+                <table>
+                    <tr>
+                        <th>厂商</th>
+                        <th>HBM4进度</th>
+                        <th>状态</th>
+                    </tr>
+                    <tr>
+                        <td><strong>SK海力士</strong></td>
+                        <td>2025年已出货首批样品</td>
+                        <td><span class="tag tag-green">🟢 领先</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>三星</strong></td>
+                        <td>2025年底量产</td>
+                        <td><span class="tag tag-yellow">🟡 跟进</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>美光</strong></td>
+                        <td>2026年推出</td>
+                        <td><span class="tag tag-red">🔴 稍慢</span></td>
+                    </tr>
+                </table>
+                
+                <div class="insight-box">
+                    <h4>⚡ 关键数据</h4>
+                    <p>• W2W键合市场：2025年1000亿日元 → 2030年3000亿日元<br>
+                    • HBM4采用12层/16层，HBM5将达20层</p>
+                </div>
+            </div>
+            
+            <!-- Panel 2: 3D DRAM Tech -->
+            <div class="card panel-blue">
+                <h2>🔬 3D DRAM技术演进 | Technology Evolution</h2>
+                
+                <div class="tech-stack">
+                    <div class="tech-layer">
+                        <div class="tech-icon" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">🔗</div>
+                        <div class="tech-content">
+                            <h5>第三层：混合键合 Hybrid Bonding</h5>
+                            <p>铜-铜直接键合，互联间距<10μm</p>
+                        </div>
+                    </div>
+                    <div class="tech-layer">
+                        <div class="tech-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">🏗️</div>
+                        <div class="tech-content">
+                            <h5>第二层：4F² 结构</h5>
+                            <p>VCT (三星) vs VG (海力士) DRAM</p>
+                        </div>
+                    </div>
+                    <div class="tech-layer">
+                        <div class="tech-icon" style="background: linear-gradient(135deg, #1abc9c, #16a085);">📐</div>
+                        <div class="tech-content">
+                            <h5>第一层：单元垂直化</h5>
+                            <p>突破平面极限，垂直排列</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-box" style="background: rgba(46, 204, 113, 0.1); border-color: #27ae60;">
+                    <h4 style="color: #2ecc71;">🇨🇳 中国弯道超车机遇</h4>
+                    <p>• 3D DRAM更依赖<strong>蚀刻/沉积/键离</strong>而非EUV<br>
+                    • 长鑫采用横向堆叠，简化工艺<br>
+                    • 大陆光刻受限反而是机遇</p>
+                </div>
+            </div>
+            
+            <!-- Panel 3: China Ecosystem -->
+            <div class="card panel-green">
+                <h2>🏭 中国HBM产业链 | Domestic Ecosystem</h2>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>长鑫存储 (CXMT)</span>
+                        <span>85% | HBM2E已量产 → HBM3 26Q1</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-green" style="width: 85%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>长江存储 (YMTC)</span>
+                        <span>60% | HBM2E 26Q1量产</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-yellow" style="width: 60%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>晋华 (JH)</span>
+                        <span>30% | 跳过HBM2E → HBM3 26Q3</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-orange" style="width: 30%;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item">
+                    <div class="progress-label">
+                        <span>华为</span>
+                        <span>40% | 战略合作中</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill fill-blue" style="width: 40%;"></div>
+                    </div>
+                </div>
+                
+                <table style="margin-top: 20px;">
+                    <tr>
+                        <th>环节</th>
+                        <th>代表标的</th>
+                    </tr>
+                    <tr>
+                        <td>封装</td>
+                        <td><span class="tag tag-purple">盛合晶微</span> <span class="tag tag-purple">通富微电</span></td>
+                    </tr>
+                    <tr>
+                        <td>设备</td>
+                        <td><span class="tag tag-blue">北方华创</span> <span class="tag tag-blue">中微公司</span> <span class="tag tag-blue">盛美上海</span></td>
+                    </tr>
+                    <tr>
+                        <td>检测</td>
+                        <td><span class="tag tag-green">精测电子</span> <span class="tag tag-green">中科飞测</span></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <!-- Panel 4: Supply Chain Risk -->
+            <div class="card panel-orange">
+                <h2>⚠️ 供应链风险矩阵 | Supply Chain Risk</h2>
+                
+                <div class="stat-row">
+                    <div class="stat-box">
+                        <div class="value" style="color: #f39c12;">17%</div>
+                        <div class="label">整体国产化率</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="color: #e74c3c;">2%</div>
+                        <div class="label">芯片键合最低</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="value" style="color: #e74c3c;">5类</div>
+                        <div class="label">卡脖子设备</div>
+                    </div>
+                </div>
+                
+                <table>
+                    <tr>
+                        <th>设备</th>
+                        <th>全球龙头</th>
+                        <th>国产化</th>
+                        <th>风险</th>
+                    </tr>
+                    <tr>
+                        <td>DRIE刻蚀机</td>
+                        <td>Lam Research</td>
+                        <td><span class="tag tag-red">0%</span></td>
+                        <td><span class="tag tag-red">极高</span></td>
+                    </tr>
+                    <tr>
+                        <td>KrF光刻机</td>
+                        <td>Nikon/Canon</td>
+                        <td><span class="tag tag-red">0%</span></td>
+                        <td><span class="tag tag-red">极高</span></td>
+                    </tr>
+                    <tr>
+                        <td>热压键合机</td>
+                        <td>ASMPT/K&S</td>
+                        <td><span class="tag tag-red">0%</span></td>
+                        <td><span class="tag tag-red">极高</span></td>
+                    </tr>
+                    <tr>
+                        <td>CMP抛光机</td>
+                        <td>AMAT/EBARA</td>
+                        <td><span class="tag tag-green">已突破</span></td>
+                        <td><span class="tag tag-green">低</span></td>
+                    </tr>
+                </table>
+                
+                <div class="risk-alert">
+                    <h4>🔴 核心影响</h4>
+                    <p>TSV无法制造 → 产线停产；2.5D封装无法进行；3D IC制造受阻</p>
+                </div>
+            </div>
+            
+            <!-- Panel 5: Investment Logic (Full Width) -->
+            <div class="card full-width panel-purple">
+                <h2>🔗 投资逻辑链 | Investment Logic Chain</h2>
+                
+                <div class="flow-container">
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div class="flow-node" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                            🤖 AI算力需求爆发
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                            💾 HBM产能扩张
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                            🔧 先进封装 ↑<br>
+                            <small>盛合晶微 / 通富微电</small>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                            🔬 检测设备 ↑<br>
+                            <small>精测电子 / 中科飞测</small>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                            🏭 晶圆厂扩产<br>
+                            <small>中芯国际</small>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-node" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                            ⚙️ 国产设备 ↑<br>
+                            <small>北方华创 / 中微 / 盛美</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="three-lines">
+                    <div class="line-card line1">
+                        <h4>封装主线</h4>
+                        <p>盛合晶微（SJ Semi）<br>通富微电</p>
+                    </div>
+                    <div class="line-card line2">
+                        <h4>设备主线</h4>
+                        <p>北方华创 / 中微公司<br>精测电子 / 中科飞测</p>
+                    </div>
+                    <div class="line-card line3">
+                        <h4>存储主线</h4>
+                        <p>长鑫存储 / 长江存储<br><em>（非上市）</em></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Panel 6: Timeline (Full Width) -->
+            <div class="card full-width panel-teal">
+                <h2>📅 关键催化剂时间线 | Key Catalysts Timeline</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025年 Q4</div>
+                        <div class="timeline-content">
+                            📈 NAND涨幅 +17-18% | DRAM涨幅 +20% | 稼动率提升至90-92%
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2026年 Q1</div>
+                        <div class="timeline-content">
+                            🏭 <strong>长鑫存储 HBM3</strong> 量产 | <strong>长江存储 HBM2E</strong> 量产<br>
+                            📈 NAND +12% | DRAM +15-16%
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2026年 Q2-Q3</div>
+                        <div class="timeline-content">
+                            ⚔️ 美光HBM3e对海力士形成挑战 | 产能持续爬坡
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2026年 Q3</div>
+                        <div class="timeline-content">
+                            🏭 <strong>晋华 HBM3</strong> 产品推出
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2026-2028年</div>
+                        <div class="timeline-content">
+                            🔗 HBM4/HBM4e 开始采用W2W键合 | 📊 bonder市场：1000亿→3000亿日元
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2028年+</div>
+                        <div class="timeline-content">
+                            🔗 HBM5 W2W键合成为主流 | 📈 HBM市场达$980亿美元
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <h3>🏆 三大投资主线</h3>
+            
+            <div class="themes-grid">
+                <div class="theme-card theme1">
+                    <h4 style="color: #9b59b6;">🔮 封装先行</h4>
+                    <ul>
+                        <li>• <strong>盛合晶微</strong> — 2.5D封装龙头，85%国产份额</li>
+                        <li>• <strong>通富微电</strong> — HBM封装合作方</li>
+                        <li>• 催化剂：IPO募资48亿，J2C厂房投产</li>
+                    </ul>
+                </div>
+                <div class="theme-card theme2">
+                    <h4 style="color: #3498db;">🔧 设备放量</h4>
+                    <ul>
+                        <li>• <strong>北方华创</strong> — 薄膜沉积设备</li>
+                        <li>• <strong>中微公司</strong> — 刻蚀设备</li>
+                        <li>• <strong>精测电子</strong> — 存储测试，Q3同比+270%</li>
+                        <li>• <strong>中科飞测</strong> — 前道量检测</li>
+                    </ul>
+                </div>
+                <div class="theme-card theme3">
+                    <h4 style="color: #27ae60;">💾 存储复苏</h4>
+                    <ul>
+                        <li>• <strong>兆易创新</strong> — 定制化存储</li>
+                        <li>• 端侧AI机遇</li>
+                        <li>• 南亚科定制化存储2026年量产</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="warning-section">
+                <h4>⚠️ 风险提示</h4>
+                <div class="warning-tags">
+                    <span class="warning-tag">🔴 技术演进不及预期</span>
+                    <span class="warning-tag">🟡 宏观经济波动</span>
+                    <span class="warning-tag">🔴 地缘政治风险</span>
+                    <span class="warning-tag">🔴 美国出口管制升级</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px; text-align: center; color: #707090; font-size: 0.85em;">
+                <p><strong>📚 数据来源：</strong>国盛证券研究所 | 国投证券研究所 | 内部数据整理</p>
+                <p style="margin-top: 8px;">内容仅供参考，不构成投资建议</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
