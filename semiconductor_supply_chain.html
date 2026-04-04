@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>半导体核心封装工艺关键供应商图谱</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 40px;
+  }
+  .sections {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .section {
+    background: #12121a;
+    border-radius: 16px;
+    padding: 28px 32px;
+    border: 1px solid #1e1e2e;
+  }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1e1e2e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .flow {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow::-webkit-scrollbar { height: 4px; }
+  .flow::-webkit-scrollbar-track { background: #1a1a24; border-radius: 2px; }
+  .flow::-webkit-scrollbar-thumb { background: #3a3a4a; border-radius: 2px; }
+  .step {
+    flex: 0 0 auto;
+    min-width: 160px;
+    max-width: 200px;
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #252535;
+    position: relative;
+  }
+  .step::after {
+    content: "→";
+    position: absolute;
+    right: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #444;
+    font-size: 1.1rem;
+  }
+  .step:last-child::after { display: none; }
+  .step-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .step-equipment {
+    font-size: 0.7rem;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  .step-equipment strong { color: #4fc3f7; }
+
+  /* Color coded sections */
+  .tsv-section .section-title .dot { background: #4a9eff; }
+  .tsv-section .step-equipment strong { color: #4a9eff; }
+  .tsv-section .step { border-color: #1a2a3a; }
+  .tsv-section .step::after { color: #4a9eff; }
+
+  .bump-section .section-title .dot { background: #00c853; }
+  .bump-section .step-equipment strong { color: #00c853; }
+  .bump-section .step { border-color: #1a2a1a; }
+  .bump-section .step::after { color: #00c853; }
+
+  .rdl-section .section-title .dot { background: #ff6d00; }
+  .rdl-section .step-equipment strong { color: #ff6d00; }
+  .rdl-section .step { border-color: #2a1a1a; }
+  .rdl-section .step::after { color: #ff6d00; }
+
+  .interposer-section .section-title .dot { background: #e040fb; }
+  .interposer-section .step-equipment strong { color: #e040fb; }
+  .interposer-section .step { border-color: #1a1a2a; }
+  .interposer-section .step::after { color: #e040fb; }
+
+  .abf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .abf-card {
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #252535;
+  }
+  .abf-card .supplier {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e040fb;
+    margin-bottom: 6px;
+  }
+  .abf-card .detail {
+    font-size: 0.72rem;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  .abf-card .warning {
+    color: #ff6d00;
+    font-size: 0.68rem;
+    margin-top: 6px;
+  }
+
+  .cte-section .section-title .dot { background: #ff5252; }
+  .cte-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 768px) { .cte-grid { grid-template-columns: 1fr; } }
+  .cte-table {
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #251a1a;
+  }
+  .cte-table h4 {
+    font-size: 0.85rem;
+    color: #ff5252;
+    margin-bottom: 14px;
+  }
+  .cte-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #1e1e2e;
+    font-size: 0.75rem;
+  }
+  .cte-row:last-child { border-bottom: none; }
+  .cte-row .mat { color: #ccc; }
+  .cte-row .val { color: #ff8a80; font-weight: 600; }
+  .failure-modes {
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #251a1a;
+  }
+  .failure-modes h4 {
+    font-size: 0.85rem;
+    color: #ff5252;
+    margin-bottom: 14px;
+  }
+  .failure-modes ul {
+    list-style: none;
+    font-size: 0.78rem;
+    color: #ccc;
+  }
+  .failure-modes ul li {
+    padding: 5px 0;
+    border-bottom: 1px solid #1e1e2e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .failure-modes ul li:last-child { border-bottom: none; }
+  .failure-modes ul li::before { content: "⚠"; color: #ff5252; }
+  .rel-section .section-title .dot { background: #ffab40; }
+  .rel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .rel-card {
+    background: #1a1a28;
+    border-radius: 10px;
+    padding: 14px;
+    border: 1px solid #252535;
+  }
+  .rel-card .name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #ffab40;
+    margin-bottom: 4px;
+  }
+  .rel-card .std { font-size: 0.65rem; color: #888; }
+  .rel-card .desc { font-size: 0.7rem; color: #aaa; margin-top: 4px; }
+  .top-vendor-section .section-title .dot { background: #69f0ae; }
+  .top-vendor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .top-vendor-card {
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #1a2a1a;
+  }
+  .top-vendor-card .company {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #69f0ae;
+    margin-bottom: 6px;
+  }
+  .top-vendor-card .coverage {
+    font-size: 0.72rem;
+    color: #aaa;
+    line-height: 1.5;
+  }
+  .cross-section .section-title .dot { background: #b388ff; }
+  .cross-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .cross-card {
+    background: #1a1a28;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #1e1a2e;
+  }
+  .cross-card .company {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #b388ff;
+    margin-bottom: 6px;
+  }
+  .cross-card .biz { font-size: 0.7rem; color: #aaa; line-height: 1.5; }
+  .cross-card .covers { font-size: 0.68rem; color: #7c4dff; margin-top: 4px; }
+
+  /* ==================== NEW: 瓶颈版块 ==================== */
+  .bottleneck-section { border-color: #2a2a1a; }
+  .bottleneck-section .section-title .dot { background: #ff9800; }
+  .bn-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 1024px) { .bn-cols { grid-template-columns: 1fr; } }
+  .bn-col {
+    background: #0f0f18;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #1e1e2e;
+  }
+  .bn-col-header {
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a2a3a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .bn-col.tech .bn-col-header { color: #ff5252; }
+  .bn-col.risk .bn-col-header { color: #ffab40; }
+  .bn-col.action .bn-col-header { color: #69f0ae; }
+  .bn-item {
+    background: #15152a;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border: 1px solid #1e1e30;
+  }
+  .bn-item:last-child { margin-bottom: 0; }
+  .bn-item-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .bn-item-body {
+    font-size: 0.7rem;
+    color: #aaa;
+    line-height: 1.65;
+  }
+  .bn-item-body strong { font-weight: 600; }
+  .bn-item-body .red { color: #ff5252; }
+  .bn-item-body .orange { color: #ff9800; }
+  .bn-item-body .yellow { color: #ffab40; }
+  .bn-item-body .green { color: #69f0ae; }
+  .bn-item-body .purple { color: #b388ff; }
+  .bn-item-body .blue { color: #4fc3f7; }
+  .bn-stars {
+    font-size: 0.75rem;
+    color: #ffab40;
+    letter-spacing: 1px;
+  }
+  .bn-arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #444;
+    padding: 0 8px;
+  }
+  .bn-action-list {
+    list-style: none;
+    font-size: 0.7rem;
+    color: #aaa;
+    line-height: 1.8;
+  }
+  .bn-action-list li::before { content: "✓ "; color: #69f0ae; }
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.72rem;
+    color: #555;
+  }
+</style>
+</head>
+<body>
+
+<h1>🖥️ 半导体核心封装工艺关键供应商图谱</h1>
+<p class="subtitle">2026-04-01 · RDL · Bumping · TSV · Interposer · CTE · 瓶颈分析</p>
+
+<div class="sections">
+
+  <!-- ==================== TSV ==================== -->
+  <div class="section tsv-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      一、TSV（硅通孔）— 3D IC 封装
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="step-name">深硅刻蚀 DRIE</div>
+        <div class="step-equipment">
+          <strong>SPTS</strong>（KLA旗下）<br>
+          Plasma-Therm<br>
+          Oxford Instruments
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">介电层沉积</div>
+        <div class="step-equipment">
+          PECVD / ALD<br>
+          <strong>Applied Materials</strong><br>
+          Lam Research / TEL
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">阻挡层/种子层</div>
+        <div class="step-equipment">
+          PVD / ALD<br>
+          <strong>Applied Materials</strong><br>
+          Lam / Evatec
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">电镀铜</div>
+        <div class="step-equipment">
+          Electroplating<br>
+          <strong>Applied Materials</strong><br>
+          Novellus（KLA）
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">化学机械抛光</div>
+        <div class="step-equipment">
+          CMP<br>
+          <strong>Applied Materials</strong><br>
+          Ebara / Revasum
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">晶圆减薄</div>
+        <div class="step-equipment">
+          Thinning<br>
+          <strong>Disco</strong>（统治地位）<br>
+          GKG / AM Technology
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">临时键合/解键合</div>
+        <div class="step-equipment">
+          Bonding / Debonding<br>
+          <strong>Brewer Science</strong><br>
+          3M / EV Group
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">检测/量测</div>
+        <div class="step-equipment">
+          X-ray / SAM<br>
+          <strong>Nordson DAGE</strong><br>
+          GE / Hitachi High-Tech
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Bumping ==================== -->
+  <div class="section bump-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      二、Bumping（凸点）— 倒装芯片封装
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="step-name">UBM 沉积</div>
+        <div class="step-equipment">
+          PVD<br>
+          <strong>Applied Materials</strong><br>
+          ULVAC / Canon Anelva
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">光刻/显影</div>
+        <div class="step-equipment">
+          Coater / Developer<br>
+          <strong>SCREEN Holdings</strong><br>
+          TEL / Rudolph
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">焊料沉积</div>
+        <div class="step-equipment">
+          蒸镀/电镀/植球<br>
+          设备: AKM / Ulvac<br>
+          材料: <strong>Senju</strong> / Alpha
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">回流焊</div>
+        <div class="step-equipment">
+          Reflow<br>
+          <strong>BTU</strong>（Amtech）<br>
+          Vitronics Soltec
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">底部填充</div>
+        <div class="step-equipment">
+          Underfill<br>
+          设备: ASM Pacific / K&S<br>
+          材料: <strong>Namics</strong> / Shin-Etsu
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== RDL ==================== -->
+  <div class="section rdl-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      三、RDL（再布线层）— 先进封装核心
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="step-name">介电层沉积</div>
+        <div class="step-equipment">
+          PECVD / 旋涂<br>
+          <strong>Applied Materials</strong><br>
+          TOK / Taiyo Yuden
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">金属层沉积</div>
+        <div class="step-equipment">
+          PVD / 电镀<br>
+          <strong>Applied Materials</strong><br>
+          Lam / SPTS
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">光刻/显影</div>
+        <div class="step-equipment">
+          涂胶/曝光/显影<br>
+          <strong>SCREEN Holdings</strong><br>
+          Canon / Rudolph
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">干法刻蚀</div>
+        <div class="step-equipment">
+          Etch<br>
+          <strong>SPTS</strong>（KLA）<br>
+          Lam Research / Plasma-Therm
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">化学机械抛光</div>
+        <div class="step-equipment">
+          CMP<br>
+          <strong>Applied Materials</strong><br>
+          Ebara
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-name">重建封装</div>
+        <div class="step-equipment">
+          RDL Formatting<br>
+          长电科技（JCET）<br>
+          通富微电 / 华天科技
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Interposer / Storage Wall ==================== -->
+  <div class="section interposer-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      五、存储墙 / CMC 存算合封 — Interposer &amp; High-end Substrate 需求激增
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px;">
+      <div class="abf-card">
+        <div class="supplier">Silicon Interposer</div>
+        <div class="detail">
+          台积电 CoWoS（自产）<br>
+          英特尔 EMIB<br>
+          三维异构集成核心
+        </div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">Glass Interposer</div>
+        <div class="detail">
+          Schott（德国）/ Corning（美国）<br>
+          LPKF（激光加工）<br>
+          低损耗、低 CTE，可大尺寸化
+        </div>
+      </div>
+    </div>
+    <div class="abf-grid">
+      <div class="abf-card">
+        <div class="supplier">揖斐电 Ibiden</div>
+        <div class="detail">FC-BGA 全球第一，AI 芯片基板主力</div>
+        <div class="warning">⚠ 极度紧张，优先供货英伟达/AMD</div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">新光电气 Shinko</div>
+        <div class="detail">日本品质，FC-BGA + 散热方案</div>
+        <div class="warning">⚠ 产能有限</div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">三星电机 SEMCO</div>
+        <div class="detail">三星内部供应为主，AI 基板外供受限</div>
+        <div class="warning">⚠ 内部优先</div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">欣兴 Unimicron</div>
+        <div class="detail">ABF 快速扩产，台系 AI 芯片主要配套</div>
+        <div class="warning">⚠ 2026-2027 产能逐步释放</div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">景硕 Kinsus</div>
+        <div class="detail">ABF 载板，日月光体系主力供应商</div>
+        <div class="warning">⚠ 跟随日月光扩产</div>
+      </div>
+      <div class="abf-card">
+        <div class="supplier">南亚 PCB</div>
+        <div class="detail">成熟制程 ABF，AI 相关在爬坡</div>
+        <div class="warning">⚠ 量产初期</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CTE ==================== -->
+  <div class="section cte-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      六、CTE 匹配挑战 — 热膨胀系数失配是 2.5D/3D 堆叠失效第一大根因
+    </div>
+    <div class="cte-grid">
+      <div class="cte-table">
+        <h4>各材料 CTE (ppm/°C)</h4>
+        <div class="cte-row"><span class="mat">硅 Si</span><span class="val">2.6</span></div>
+        <div class="cte-row"><span class="mat">铜 Cu</span><span class="val">17</span></div>
+        <div class="cte-row"><span class="mat">陶瓷 Ceramic</span><span class="val">6 – 9</span></div>
+        <div class="cte-row"><span class="mat">玻璃 Glass</span><span class="val">3 – 8</span></div>
+        <div class="cte-row"><span class="mat">有机基板</span><span class="val">15 – 25</span></div>
+        <div class="cte-row"><span class="mat">环氧塑封料 EMC</span><span class="val">10 – 15</span></div>
+        <div class="cte-row"><span class="mat">底部填充胶 Underfill</span><span class="val">25 – 45</span></div>
+        <div class="cte-row"><span class="mat">焊料 SnAgCu</span><span class="val">20 – 25</span></div>
+      </div>
+      <div class="failure-modes">
+        <h4>热应力失效模式</h4>
+        <ul>
+          <li>界面分层（Delamination）</li>
+          <li>焊点开裂（Solder Joint Crack）</li>
+          <li>TSV 损伤（Via Crack）</li>
+          <li>RDL 裂纹（RDL Crack）</li>
+          <li>Underfill 脱粘（Underfill Debond）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Reliability Lab ==================== -->
+  <div class="section rel-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      Reliability Lab — 供应商审核必考维度
+    </div>
+    <div class="rel-grid">
+      <div class="rel-card">
+        <div class="name">TCT 热循环测试</div>
+        <div class="std">JEDEC JESD22-A104</div>
+        <div class="desc">评估温度循环下的可靠性</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">HAST / PCT</div>
+        <div class="std">JEDEC JESD22-A110 / A118</div>
+        <div class="desc">高加速温湿度测试，湿敏可靠性</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">功率循环</div>
+        <div class="std">—</div>
+        <div class="desc">模拟实际工作条件开关机应力</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">SEM / CSAM</div>
+        <div class="std">—</div>
+        <div class="desc">TSV/焊点/界面缺陷无损检测</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">DPA 破坏性分析</div>
+        <div class="std">—</div>
+        <div class="desc">截面分析、脱层检测</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">X-ray / CT-Scan</div>
+        <div class="std">—</div>
+        <div class="desc">内部结构 3D 重构（Zeiss/Bruker）</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">FEA 热机械仿真</div>
+        <div class="std">Ansys / ABAQUS</div>
+        <div class="desc">设计阶段预测 CTE 失配风险</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">车规 AEC-Q100</div>
+        <div class="std">AEC 标准全套</div>
+        <div class="desc">汽车电子可靠性认证体系</div>
+      </div>
+      <div class="rel-card">
+        <div class="name">ISO 17025</div>
+        <div class="std">实验室认证</div>
+        <div class="desc">实验室能力国际认可标准</div>
+      </div>
+    </div>
+    <div style="margin-top: 18px; padding: 14px 18px; background: #0d1f15; border-radius: 10px; border: 1px solid #1a3a20;">
+      <div style="font-size: 0.8rem; color: #69f0ae; font-weight: 600; margin-bottom: 8px;">✅ 头部供应商关键特征</div>
+      <div style="font-size: 0.72rem; color: #aaa; line-height: 1.8;">
+        ✓ 拥有内部 Reliability Lab（不依赖第三方送检）&nbsp;&nbsp;
+        ✓ 可提供加速模型数据（Acceleration Factor Report）&nbsp;&nbsp;
+        ✓ 具备 AI / HBM / 先进封装已量产记录&nbsp;&nbsp;
+        ✓ 通过 ISO 17025 认证
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Cross-process vendors ==================== -->
+  <div class="section cross-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      四、跨工艺关键综合供应商
+    </div>
+    <div class="cross-grid">
+      <div class="cross-card">
+        <div class="company">Applied Materials</div>
+        <div class="biz">PVD · CVD · CMP · 刻蚀 · 电镀</div>
+        <div class="covers">覆盖: TSV + RDL + Bumping</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">Lam Research</div>
+        <div class="biz">刻蚀 · 沉积 · 电镀</div>
+        <div class="covers">覆盖: TSV + RDL</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">SCREEN Holdings</div>
+        <div class="biz">清洗 · 涂胶显影</div>
+        <div class="covers">覆盖: Bumping + RDL</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">Tokyo Electron (TEL)</div>
+        <div class="biz">涂胶显影 · 沉积 · 刻蚀</div>
+        <div class="covers">覆盖: TSV + RDL</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">Disco</div>
+        <div class="biz">切割 · 减薄</div>
+        <div class="covers">覆盖: TSV + Bumping</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">Kulicke & Soffa</div>
+        <div class="biz">植球 · 倒装</div>
+        <div class="covers">覆盖: Bumping</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">ASM Pacific</div>
+        <div class="biz">封装设备全线</div>
+        <div class="covers">覆盖: Bumping + 测试</div>
+      </div>
+      <div class="cross-card">
+        <div class="company">KLA (SPTS/Novellus)</div>
+        <div class="biz">刻蚀 · 检测</div>
+        <div class="covers">覆盖: TSV + RDL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 核心瓶颈与替代方案 ==================== -->
+  <div class="section bottleneck-section">
+    <div class="section-title">
+      <span class="dot"></span>
+      七、核心瓶颈与替代方案
+    </div>
+    <div class="bn-cols">
+
+      <!-- 左列：技术瓶颈 -->
+      <div class="bn-col tech">
+        <div class="bn-col-header">🔴 技术瓶颈（研发端）</div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">存算合封 → 互联密度</div>
+          <div class="bn-item-body">
+            HBM + Logic 近距离互连需求爆发<br>
+            → Interposer / Interconnect 层数激增<br>
+            → 驱动 <span class="red">高阶 ABF 基板</span> 需求激增
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">3D 堆叠 → 散热 / 应力</div>
+          <div class="bn-item-body">
+            芯片堆叠热密度大幅上升<br>
+            → 多材料 <span class="red">CTE 梯度失配</span> 风险<br>
+            → 焊点疲劳、界面分层、TSV 损伤
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">HBM 良率墙</div>
+          <div class="bn-item-body">
+            3D 堆叠工艺窗口极窄<br>
+            → TSV 良率损耗成本高<br>
+            → KGD（Known Good Die）验证周期长
+          </div>
+        </div>
+      </div>
+
+      <!-- 箭头 -->
+      <div class="bn-arrow-col">➜</div>
+
+      <!-- 中列：供应链风险 -->
+      <div class="bn-col risk">
+        <div class="bn-col-header">🟡 供应链风险（寻源战场）</div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">Single Source 风险</div>
+          <div class="bn-item-body">
+            <span class="orange">•</span> 高端电镀液（Enthone / Uyemura）<br>
+            <span class="orange">•</span> 高性能 Underfill（Namics / Shin-Etsu）<br>
+            <span class="orange">•</span> 先进光刻胶（TOK / JSR）<br>
+            <span class="orange">•</span> 临时键合胶（Brewer Science）
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">Long Lead-time 风险</div>
+          <div class="bn-item-body">
+            <span class="yellow">•</span> ABF 载板（扩产周期 <span class="red">3-5 年</span>）<br>
+            <span class="yellow">•</span> 高精度曝光机（交付 <span class="red">18-24 个月</span>）<br>
+            <span class="yellow">•</span> 硅通孔设备（SPTS/Lam 交期长）<br>
+            <span class="yellow">•</span> 硅中介片（台积电 CoWoS 产能）
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">地缘政治风险</div>
+          <div class="bn-item-body">
+            <span class="purple">•</span> 日本设备/材料出口管制<br>
+            <span class="purple">•</span> 美国 BIS 实体清单扩编<br>
+            <span class="purple">•</span> 台湾海峡供应链集中度
+          </div>
+        </div>
+      </div>
+
+      <!-- 箭头 -->
+      <div class="bn-arrow-col">➜</div>
+
+      <!-- 右列：应对预案 -->
+      <div class="bn-col action">
+        <div class="bn-col-header">🟢 应对预案（业绩产出）</div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">国产二供验证计划</div>
+          <div class="bn-item-body">
+            <ul class="bn-action-list">
+              <li>安集科技（抛光液/CMP）— 已通过部分客户验证</li>
+              <li>鼎龙控股（PI 膜/光敏树脂）— RDL 用材料导入中</li>
+              <li>中巨芯（电镀液）— 客户端验证阶段</li>
+              <li>华海清科（CMP 设备）— 国产替代加速</li>
+              <li>长春集团（EMC/PI）— 扇出封装材料认证</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">供应商 Reliability Lab 星级评定</div>
+          <div class="bn-item-body">
+            <span class="bn-stars">★★★★★</span> 内部 Lab + AI/HBM 已量产 + ISO17025<br>
+            <span class="bn-stars">★★★★☆</span> 内部 Lab + 加速模型 + 客制化方案<br>
+            <span class="bn-stars">★★★☆☆</span> 内部 Lab + 标准测试 + 量产记录<br>
+            <span class="bn-stars">★★☆☆☆</span> 外部 Lab + 标准测试<br>
+            <span class="bn-stars">★☆☆☆☆</span> 仅能提供报告，无 FA 能力
+          </div>
+        </div>
+
+        <div class="bn-item">
+          <div class="bn-item-title">产能锁定行动项</div>
+          <div class="bn-item-body">
+            <ul class="bn-action-list">
+              <li>与 Ibiden / Shinko 签订长期产能协议（LTA）</li>
+              <li>欣兴/景硕 2026-2027 新产能预付定金</li>
+              <li>推动内部材料实验室认证，倒逼供应商提升</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  整理：拉克 ✨ &nbsp;|&nbsp; 最后更新：2026-04-01 &nbsp;|&nbsp; 本图谱聚焦前道后端关键供应商，数据仅供参考
+</div>
+
+</body>
+</html>
